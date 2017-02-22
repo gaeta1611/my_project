@@ -2,12 +2,47 @@
 
 <html>
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+		<link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 	</head>
 	<body>
-		<h1>Voici toute les catégories</h1>
+		<div class="row">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+		<div class="jumbotron">
+			<h1>Liste des catégories</h1>
+		</div>
+		
 		{% for categorie in categories %}
-			<div class="title">{{categorie.nom}}</div>
-			<a href = "{{ path('deleteCategorie', {'id':categorie.id})}}"><button type"button">Supprimer la catégorie</button></a>
-		{% endfor %}	
+		<div class="panel panel-primary">
+            <div class="panel-heading">
+              <h1 class="panel-title"><b>{{categorie.nom}}</b></h1>
+          	</div>
+            <div class="panel-body">
+				<a href = "{{ path('deleteCategorie', {'id':categorie.id})}}">
+					<button type"button" class="btn btn-danger">Supprimer la catégorie</button>
+				</a>
+				<a href = "{{ path('modifyCategorie',  {'id': categorie.id})}}">
+					<button type"button" class="btn btn-primary">Modifier la catégorie</button>
+				</a>
+			</div>
+			</div>
+		
+		{% endfor %}
+
+		
+		<a href = "{{ path('home')}}">
+			<button type"button" class="btn btn-primary">Retour</button>
+		</a>
+
+		</div>
+		<div class="col-md-1"></div>
+		</div>
+
+
+
+		<script src="{{ asset('js/jquery.min.js') }}"></script>
+		<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	</body>
 </html>

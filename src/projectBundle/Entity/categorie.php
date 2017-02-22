@@ -28,14 +28,6 @@ class categorie
      */
     private $nom;
 
-    /**
-     * 
-     *
-     * @ORM\OneToMany(targetEntity="note", mappedBy="categorie")
-     */
-    private $note;
-
-
 
     /**
      * Get id
@@ -76,39 +68,5 @@ class categorie
     public function __construct()
     {
         $this->note = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add note
-     *
-     * @param \projectBundle\Entity\note $note
-     *
-     * @return categorie
-     */
-    public function addNote(\projectBundle\Entity\note $note)
-    {
-        $this->note[] = $note;
-
-        return $this;
-    }
-
-    /**
-     * Remove note
-     *
-     * @param \projectBundle\Entity\note $note
-     */
-    public function removeNote(\projectBundle\Entity\note $note)
-    {
-        $this->note->removeElement($note);
-    }
-
-    /**
-     * Get note
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getNote()
-    {
-        return $this->note;
     }
 }

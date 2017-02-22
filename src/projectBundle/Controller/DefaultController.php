@@ -64,11 +64,13 @@ class DefaultController extends Controller
 	}
 
 
+	/**
+     *@Route("/modifyNote/{id}", name="modifyNote")
+     */
 	public function modifyNoteAction(Request $request, note $task) {  
     	$em = $this->getDoctrine()->getManager();
 
     	$categories = $em->getRepository('projectBundle:categorie')->findAll();
-
 
 		$form = $this->createFormBuilder($task) 
 			->add('title', TextType::class, array('label' => 'Titre : ')) 
@@ -92,7 +94,7 @@ class DefaultController extends Controller
 			return $this->redirect($this->generateUrl('home'));
 		}
 
-		return $this->render('projectBundle:Note:index.html.twig', array('form' =>$form->createView()));
+		return $this->render('projectBundle:Note:note.html.twig', array('form' =>$form->createView()));
 	}
 
 	/**
@@ -119,6 +121,33 @@ class DefaultController extends Controller
 
 		return $this->render('projectBundle:Note:create_categorie.html.twig', array('form' =>$form->createView()));
 	}
+
+	/**
+     *@Route("/modifyCategorie/{id}", name="modifyCategorie")
+     */
+
+	public function modifyCategorieAction(Request $request, categorie $task) { 
+		
+
+		$form = $this->createFormBuilder($task) 
+			->add('nom', TextType::class, array('label' => 'Nom de la catégorie')) 
+			->add('save', SubmitType::class, array('label' => 'Sauvegarder')) 
+			->getForm();
+
+		$form->handleRequest($request); 
+		$task = $form->getData();
+
+		if ($form->isValid()) { 
+			$em = $this->getDoctrine()->getManager(); 
+			$em->persist($task); 
+			$em->flush(); 
+
+			return $this->redirect($this->generateUrl('ShowCategorie'));
+		}
+
+		return $this->render('projectBundle:Note:create_categorie.html.twig', array('form' =>$form->createView()));
+	}
+	
 
 	/**
      * @Route("/ShowCategorie", name="ShowCategorie")

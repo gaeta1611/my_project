@@ -2,21 +2,50 @@
 
 <html>
 <head>
-	<title>Notepad</title>
-	
+	<title>Liste des notes</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 </head>
 <body>
-	<h1>Notepad</h1>
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+	<div class="jumbotron">
+		<h1>Liste des notes</h1>
+		<a href = "{{ path('newNote')}}"><button type"button" class="btn btn-primary">Ajouter une note</button></a>
+		<a href = "{{ path('newCategorie')}}"><button type"button" class="btn btn-primary">Ajouter une catégorie</button></a>
+		<a href = "{{ path('ShowCategorie')}}"><button type"button" class="btn btn-warning">Afficher les catégories</button></a>
+	</div>
+
 	{% for note in notes %}
-		<div class="title">{{note.title}}</div>
-		<div class="title">{{note.content}}</div>
-		<!--<div class="title">{{note.categorie.nom}}</div>-->
-		<a href = "{{ path('deleteNote',  {'id': note.id})}}"><button type"button">Supprimer la note</button></a>
-		<!--<a href = "{{ path('modifyNoteAction',  {'id': note.id})}}"><button type"button">Modifier la note</button></a>-->
+		<div class="panel panel-primary">
+            <div class="panel-heading">
+              <h1 class="panel-title"><b>{{note.title}}</b></h1>
+              {{note.categorie.nom}} - 
+              {{note.date|date('d/m/Y')}}
+
+			</div>
+            <div class="panel-body">
+            	 {{note.content}} <br></br>
+            	<a href = "{{ path('deleteNote',  {'id': note.id})}}"><button type"button" class="btn btn-danger">Supprimer la note</button></a>
+				<a href = "{{ path('modifyNote',  {'id': note.id})}}"><button type"button" class="btn btn-primary">Modifier la note</button></a>
+			</div>	
+    	</div>
+		
+		
+
+	
+
+
 	{% endfor %}	
-	<a href = "{{ path('newNote')}}"><button type"button">Nouvelle note</button></a>
-	<a href = "{{ path('newCategorie')}}"><button type"button">Nouvelle catégorie</button></a>
-	<a href = "{{ path('ShowCategorie')}}"><button type"button">Afficher les catégories</button></a>
-	<a href = "{{ path('ModifyNoteAction')}}"><button type"button">Modifier la note</button></a>
+	
+	</div>
+	<div class="col-md-1"></div>
+	</div>
+
+	<script src="{{ asset('js/jquery.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 </body>
 </html>
+
