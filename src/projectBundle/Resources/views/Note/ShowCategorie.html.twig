@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	</head>
+	<body>
+		<h1>Voici toute les catégories</h1>
+		{% for categorie in categories %}
+			<div class="title">{{categorie.nom}}</div>
+			<a href = "{{ path('deleteCategorie', {'id':categorie.id})}}"><button type"button">Supprimer la catégorie</button></a>
+		{% endfor %}	
+	</body>
+</html>

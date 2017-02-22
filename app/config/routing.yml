@@ -1,0 +1,13 @@
+project:
+    resource: "@projectBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+notepad:
+    resource: "@NotepadBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation

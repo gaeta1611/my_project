@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Notepad</title>
+	
+</head>
+<body>
+	<h1>Notepad</h1>
+	{% for note in notes %}
+		<div class="title">{{note.title}}</div>
+		<div class="title">{{note.content}}</div>
+		<!--<div class="title">{{note.categorie.nom}}</div>-->
+		<a href = "{{ path('deleteNote',  {'id': note.id})}}"><button type"button">Supprimer la note</button></a>
+		<!--<a href = "{{ path('modifyNoteAction',  {'id': note.id})}}"><button type"button">Modifier la note</button></a>-->
+	{% endfor %}	
+	<a href = "{{ path('newNote')}}"><button type"button">Nouvelle note</button></a>
+	<a href = "{{ path('newCategorie')}}"><button type"button">Nouvelle catégorie</button></a>
+	<a href = "{{ path('ShowCategorie')}}"><button type"button">Afficher les catégories</button></a>
+	<a href = "{{ path('ModifyNoteAction')}}"><button type"button">Modifier la note</button></a>
+</body>
+</html>
