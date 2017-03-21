@@ -3,6 +3,7 @@
 namespace projectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * note
@@ -87,6 +88,31 @@ class note
     {
         return $this->title;
     }
+
+    //nouvelle ajout
+    /**
+     * @Assert\IsTrue(message="The content is not valid!")
+     */
+    public function isValidContent() {
+        // http://stackoverflow.com/a/31387538
+        $xml = new \DOMDocument();
+        $implementation = new \DOMImplementation();
+        $xml->appendChild($implementation->createDocumentType('content'));
+        $content_elem = $xml->createElement('content');
+        $content_xml = $xml->createDocumentFragment();
+
+
+        try {
+            $content_xml->appendXML($this->content);
+            $content_elem->appendChild($content_xml);
+            $xml->appendChild($content_elem);
+            return $xml->schemaValidate('Schema_xml.xsd');
+        } catch (\ErrorException $e) {
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Set content

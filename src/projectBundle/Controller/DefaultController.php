@@ -16,16 +16,56 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class DefaultController extends Controller
 {
+
     /**
      * @Route("/", name="home")
      */
-    public function indexAction() {
-    	$em = $this->getDoctrine()->getManager();
-
-    	$product = $em->getRepository('projectBundle:note')->findAll();
-
-        return $this->render('projectBundle:Note:index.html.twig', array('notes' => $product));
+    public function indexAction(Request $request) {
+    	//Pour la recherche de tag
+        $data = array();
+        $form = $this->createFormBuilder($data)
+            ->add('tag', TextType::class, array('required'=>true))
+            ->add('submit', SubmitType::class,
+                array('label' => 'Rechercher un tag'))
+            ->getForm();
+        $form->handleRequest($request);
+        //Requet DB avec erreur
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $product = $em->getRepository('projectBundle:note')->findAll();
+        } catch (\Doctrine\DBAL\DBALException $e) {
+            $this->addFlash('error', 'erreur de connection a la DB');
+            return $this->redirect($this->generateUrl('home'));
+        }
+        //Montre les notes avec un tag
+        if ($form->isValid()) {
+            $tag = $form->getData()['tag'];
+            $filtered_notes = array();
+            foreach ($product as $note) {
+                $xml = new \DOMDocument();
+                $xml->loadXML('<content>'.$note->getContent().'</content>');
+                $xpath = new \DOMXPath($xml);
+                $elements = $xpath->query('//tag');
+                foreach ($elements as $element) {
+                    if ($element->textContent == $tag) {
+                        $filtered_notes[] = $note;
+                        break;
+                    }
+                }
+            }
+            //Si le tag n'a pas été trouve -> message d'erreur
+            if (sizeof($filtered_notes) > 0) {
+                $product = $filtered_notes;
+            } else {
+                $this->addFlash('error', 'Pas de de tag correspondant !');
+            }
+        }
+        return $this->render('projectBundle:Note:index.html.twig',
+            array('notes' => $product, 'form' => $form->createView()));
+    
     }
+
+
 
     /**
      *@Route("/newNote", name="newNote")
@@ -53,11 +93,16 @@ class DefaultController extends Controller
 		$task = $form->getData();
 
 		if ($form->isValid()) { 
+			try {
 			$em = $this->getDoctrine()->getManager(); 
 			$em->persist($task); 
 			$em->flush(); 
+			} catch(\Doctrine\DBAL\DBALException $e){
+				$this->addFlash('error', 'La note n a pas pu être editée');
+                return $this->redirect($this->generateUrl('home'));
+			}	
 
-			return $this->redirect($this->generateUrl('home'));
+			return $this->redirect($this->generateUrl('home'));   
 		}
 
 		return $this->render('projectBundle:Note:note.html.twig', array('form' =>$form->createView()));
