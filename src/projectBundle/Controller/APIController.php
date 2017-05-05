@@ -130,5 +130,39 @@ class APIController extends Controller
            return new Response();
        }
    
+      /**
+       * @Route("/api/note/{id}")
+       * @Method("OPTIONS")
+       */
+      function corsNote() {
+          $response = new Response();
+          $response->headers->set('Content-Type', 'application/text');
+          $response->headers->set('Access-Control-Allow-Origin', '*');
+          $response->headers->set('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+          return $response;
+      }
+
+      /**
+       * @Route("/api/categorie/{id}")
+       * @Method("OPTIONS")
+       */
+      function corsCategorie() {
+          $response = new Response();
+          $response->headers->set('Content-Type', 'application/text');
+          $response->headers->set('Access-Control-Allow-Origin', '*');
+          $response->headers->set('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+          return $response;
+        }
+      /**
+       * @Route("/api/categorie/")
+       * @Method("OPTIONS")
+       */
+      function corsCategories() {
+          $response = new Response();
+          $response->headers->set('Content-Type', 'application/text');
+          $response->headers->set('Access-Control-Allow-Origin', '*');
+          $response->headers->set('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+          return $response;
+      }
 
 }
